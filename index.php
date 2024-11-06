@@ -1,5 +1,6 @@
 <?php
 
+require 'vendor/autoload.php';
 require_once "./autoload.php";
 
 $request = $_SERVER['REQUEST_URI'];

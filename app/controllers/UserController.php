@@ -17,6 +17,8 @@ class UserController
             ]
         ];
 
+        Database::getInstance();
+
         return Template::view('user.list', ['users' => $users]);
     }
 

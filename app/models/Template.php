@@ -49,24 +49,22 @@ class Template {
 
     public function mergeData($viewContent, $data) 
     {
-        $a = $viewContent;
-        $c = '';
-        $x = '';
+        $countContent = '';
         foreach ($data as $rowKey => $row) {
-            $c = $a;
             if (preg_match('/:'.$rowKey.'{/', $viewContent)) {
                 foreach ($row as $column) {
+                    $a = $viewContent;
                     foreach ($column as $valueKey => $value) {
-                        if (preg_match('/:'.$rowKey.'{'.$valueKey.'}/', $c, $matches)) {
-                            $a = str_replace($matches[0], $value, $c);
+                        if (preg_match('/:'.$rowKey.'{'.$valueKey.'}/', $viewContent, $matches)) {
+                            $a = str_replace($matches[0], $value, $a);
                         }
                     }
-                    $x .= $a;
+                    $countContent .= $a;
                 }
             }
         }
-        var_dump("<xmp>$x</xmp>");
-        return $c;
+        var_dump("<xmp>$countContent</xmp>");
+        return $countContent;
     }
 
     public static function view(string $view = '', array $data = [])

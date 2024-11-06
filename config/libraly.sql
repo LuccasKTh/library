@@ -1,52 +1,56 @@
-create schema library;
+CREATE SCHEMA library;
 
-use library;
+USE library;
 
-create table users (
-    id int primary key auto_increment,
-    name varchar not null,
-    email varchar not null,
-    cpf varchar,
-    password varchar not null,
-    user_role int not null
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    cpf VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    user_role INT NOT NULL
 );
 
-create table authors (
-    id int primary key auto_increment,
-    name varchar not null,
-    last_name varchar not null
+CREATE TABLE authors (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL
 );
 
-create table categories (
-    id int primary key auto_increment,
-    description varchar not null    
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    description VARCHAR(255) NOT NULL    
 );
 
-create table books (
-    id int primary key auto_increment,
-    title varchar not null,
-    publication int not null,
-    book_cover varchar not null,
-    category_id int not null,
-    foreign key (category_id) references categories (id)
+CREATE TABLE books (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    publication YEAR NOT NULL,
+    book_cover VARCHAR(255) NOT NULL,
+    category_id INT NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories (id)
 );
 
-create table author_book (
-    id int primary key auto_increment,
-    author_id int not null,
-    book_id int not null
+CREATE TABLE author_book (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    author_id INT NOT NULL,
+    book_id INT NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES authors (id),
+    FOREIGN KEY (book_id) REFERENCES books (id)
 );
 
-create table purchases (
-    id int primary key auto_increment,
-    date datetime not null,
+CREATE TABLE purchases (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    date DATETIME NOT NULL
 );
 
-create table purchase_items (
-    id int primary key auto_increment,
-    book_id int not null,
-    purchase_id int not null,
-    unit_value float not null,
-    quantity int not null,
-    total_item_value float not null
+CREATE TABLE purchase_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    book_id INT NOT NULL,
+    purchase_id INT NOT NULL,
+    unit_value FLOAT NOT NULL,
+    quantity INT NOT NULL,
+    total_item_value FLOAT NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books (id),
+    FOREIGN KEY (purchase_id) REFERENCES purchases (id)
 );

@@ -6,10 +6,11 @@ class User extends Model {
     private string $name;
     private string $email;
     private string $password;
+    public string $table = 'users';
 
     public function __construct($id, $name, $email, $password)
     {
-        parent::__construct($id);
+        parent::__construct($id, $this->table);
         $this->setName($name);
         $this->setEmail($email);
         $this->setPassword($password);

@@ -19,6 +19,30 @@ class Template {
     public static function instance()
     {
         return new self();
+    } 
+
+    public static function view(string $view = '', array $data = [])
+    {
+        $instance = self::instance();
+        $sectionView = $instance->searchSection($view, $data);
+
+        $appContent = $instance->makeApp();
+        $appContent = $instance->makeContent($appContent, $sectionView);
+
+        echo $appContent;
+    }
+
+    public function makeApp()
+    {
+        $appContent = file_get_contents($this->dir . $this->views . $this->app);
+        $menuContent = file_get_contents($this->dir . $this->layouts . $this->menu);
+
+        return str_replace(':navigation', $menuContent, $appContent);
+    }
+
+    public function makeContent($appContent, $content)
+    {
+        return str_replace(':content', $content, $appContent);
     }
 
     public function getView($view)
@@ -49,45 +73,25 @@ class Template {
 
     public function mergeData($viewContent, $data) 
     {
-        $countContent = '';
-        foreach ($data as $rowKey => $row) {
-            if (preg_match('/:'.$rowKey.'{/', $viewContent)) {
-                foreach ($row as $column) {
-                    $a = $viewContent;
-                    foreach ($column as $valueKey => $value) {
-                        if (preg_match('/:'.$rowKey.'{'.$valueKey.'}/', $viewContent, $matches)) {
-                            $a = str_replace($matches[0], $value, $a);
+        $renderedContent = '';
+    
+        foreach ($data as $dataKey => $rows) {
+            if (preg_match('/:'.$dataKey.'{/', $viewContent)) {
+                foreach ($rows as $row) {
+                    $rowContent = $viewContent;
+                    foreach ($row as $columnKey => $value) {
+                        if (preg_match('/:'.$dataKey.'{'.$columnKey.'}/', $viewContent, $matches)) {
+                            $rowContent = str_replace($matches[0], $value, $rowContent);
                         }
                     }
-                    $countContent .= $a;
+    
+                    $renderedContent .= $rowContent;
                 }
+            } else {
+                return $viewContent;
             }
         }
-        var_dump("<xmp>$countContent</xmp>");
-        return $countContent;
-    }
-
-    public static function view(string $view = '', array $data = [])
-    {
-        $instance = self::instance();
-        $sectionView = $instance->searchSection($view, $data);
-
-        $appContent = $instance->makeApp();
-        $appContent = $instance->makeContent($appContent, $sectionView);
-
-        echo $appContent;
-    }
-
-    public function makeApp()
-    {
-        $appContent = file_get_contents($this->dir . $this->views . $this->app);
-        $menuContent = file_get_contents($this->dir . $this->layouts . $this->menu);
-
-        return str_replace(':navigation', $menuContent, $appContent);
-    }
-
-    public function makeContent($appContent, $content)
-    {
-        return str_replace(':content', $content, $appContent);
-    }
+    
+        return $renderedContent;
+    }   
 }

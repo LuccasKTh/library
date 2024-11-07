@@ -1,4 +1,4 @@
 /.env
 /node_modules/
 /vendor/
-/public/views/css/output.css
+/public/css/output.css

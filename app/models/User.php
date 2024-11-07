@@ -1,24 +1,27 @@
 <?php
 
-require_once "../../autoload.php";
-
 class User extends Model {
     private string $name;
     private string $email;
     private string $password;
-    public string $table = 'users';
+    private int $user_role;
+    protected static $table = 'users';
+    protected static $class = self::class;
 
-    public function __construct($id, $name, $email, $password)
+    protected static $fillable = ['id', 'name', 'email', 'password', 'user_role'];
+
+    public function __construct($id, $name, $email, $password, $user_role)
     {
-        parent::__construct($id, $this->table);
+        parent::__construct($id);
         $this->setName($name);
         $this->setEmail($email);
         $this->setPassword($password);
+        $this->setUserRole($user_role);
     }
 
     public function setName($name)
     {
-        if ($name) {
+        if (!$name) {
             throw new Exception("Invalid name");
         } else {
             $this->name = $name;
@@ -27,7 +30,7 @@ class User extends Model {
 
     public function setEmail($email)
     {
-        if ($email) {
+        if (!$email) {
             throw new Exception("Invalid email");
         } else {
             $this->email = $email;
@@ -36,10 +39,19 @@ class User extends Model {
 
     public function setPassword($password)
     {
-        if ($password) {
+        if (!$password) {
             throw new Exception("Invalid password");
         } else {
             $this->password = $password;
+        }
+    }
+
+    public function setUserRole($user_role)
+    {
+        if (!$user_role) {
+            throw new Exception("Invalid user role");
+        } else {
+            $this->user_role = $user_role;
         }
     }
 
@@ -56,6 +68,11 @@ class User extends Model {
     public function getPassword()
     {
         return $this->password;    
+    }
+
+    public function getUserRole()
+    {
+        return $this->user_role;    
     }
 
     public function login()

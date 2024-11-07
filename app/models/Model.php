@@ -1,31 +1,23 @@
 <?php
 
 abstract class Model {
-    public int $id;
-    public string $table;
+    private int $id;
+    protected static $table;
+    protected static $class;
+    protected static $fillable;
 
-    public function __construct($id, $table)
+    public function __construct($id)
     {
         $this->setId($id);
-        $this->setTable($table);
     }
 
     public function setId($id)
     {
         if ($id < 0) {
             throw new Exception("Invalid id");
+        } else {
+            $this->id = $id;
         }
-
-        $this->id = $id;
-    }
-
-    public function setTable($table)
-    {
-        if ($table == '') {
-            throw new Exception("Invalid table");
-        }
-
-        $this->table = $table;
     }
 
     public function getId()
@@ -38,9 +30,14 @@ abstract class Model {
         return $this->table;    
     }
 
+    public function getFillable()
+    {
+        return $this->fillable;    
+    }
+
     public function save()
     {
-            
+
     }
 
     public function update()
@@ -55,7 +52,49 @@ abstract class Model {
 
     public static function all()
     {
-        
+        $table = static::$table;
+        $fillable = static::$fillable;
+
+        $sql = "SELECT * FROM $table";
+
+        $command = Database::execute($sql);
+
+        $data = [];
+        while ($register = $command->fetch()) {
+            $row = [];
+            foreach ($register as $key => $value) {
+                if (in_array($key, $fillable)) {
+                    $row[$key] = $value;
+                }
+            }
+            array_push($data, $row);
+        }
+
+        return $data;
+
+        // $table = static::$table;
+        // $class = static::$class;
+        // $fillable = static::$fillable;
+
+        // $sql = "SELECT * FROM $table";
+        // $command = Database::execute($sql);
+
+        // $collection = [];
+        // while ($register = $command->fetch()) {
+        //     // Filtra os atributos preenchíveis
+        //     $attributes = [];
+        //     foreach ($register as $key => $value) {
+        //         if (in_array($key, $fillable)) {
+        //             $attributes[$key] = $value;
+        //         }
+        //     }
+
+        //     // Instancia o objeto da classe específica
+        //     $object = new $class(...array_values($attributes));
+        //     $collection[] = $object;
+        // }
+
+        // return $collection;
     }
 
     public static function where()

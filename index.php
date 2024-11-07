@@ -5,21 +5,23 @@ require_once "./autoload.php";
 
 $request = $_SERVER['REQUEST_URI'];
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+$request = ltrim($request, '/');
 
-switch ($request) {
-    case '/':
+switch (true) {
+    case ($request === ''):
         Route::resource(UserController::class, 'index');
         break;
 
-    case '/login':
+    case ($request === 'login'):
         Route::resource(UserController::class, 'create');
         break;
 
-    case '/register':
-        $instance = new UserController;
-        $instance->index(); 
+    case preg_match('/^user\/(\d+)$/', $request, $matches):
+        $id = $matches[1];
+        echo "ID capturado: $id";
+        break;
+
+    default:
+        echo "Página não encontrada.";
         break;
 }

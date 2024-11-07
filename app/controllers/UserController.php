@@ -4,20 +4,7 @@ class UserController
 {
     public function index()
     {
-        $users = [
-            [
-                'id' => 1,
-                'name' => 'Lucas',
-                'email' => 'lucas.kthiel@gmail.com'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Gustavo',
-                'email' => 'gustavo@gmail.com'
-            ]
-        ];
-
-        Database::getInstance();
+        $users = User::all();
 
         return Template::view('user.list', ['users' => $users]);
     }

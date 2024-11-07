@@ -73,18 +73,22 @@ class Template {
 
     public function mergeData($viewContent, $data) 
     {
-        $renderedContent = '';
+        $renderedContent = ''; 
     
         foreach ($data as $dataKey => $rows) {
             if (preg_match('/:'.$dataKey.'{/', $viewContent)) {
                 foreach ($rows as $row) {
                     $rowContent = $viewContent;
-                    foreach ($row as $columnKey => $value) {
-                        if (preg_match('/:'.$dataKey.'{'.$columnKey.'}/', $viewContent, $matches)) {
+
+                    $methods = get_class_methods($row);
+
+                    foreach ($methods as $method) {
+                        if (preg_match('/:'.$dataKey.'{'.$method.'}/', $viewContent, $matches)) {
+                            $value = $row->$method();
                             $rowContent = str_replace($matches[0], $value, $rowContent);
                         }
                     }
-    
+
                     $renderedContent .= $rowContent;
                 }
             } else {

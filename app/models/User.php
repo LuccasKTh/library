@@ -10,7 +10,7 @@ class User extends Model {
 
     protected static $fillable = ['id', 'name', 'email', 'password', 'user_role'];
 
-    public function __construct($id, $name, $email, $password, $user_role)
+    public function __construct($id, $name, $email, $cpf, $password, $user_role)
     {
         parent::__construct($id);
         $this->setName($name);

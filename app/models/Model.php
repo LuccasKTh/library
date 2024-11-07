@@ -53,48 +53,26 @@ abstract class Model {
     public static function all()
     {
         $table = static::$table;
+        $class = static::$class;
         $fillable = static::$fillable;
 
         $sql = "SELECT * FROM $table";
-
         $command = Database::execute($sql);
 
-        $data = [];
+        $collection = [];
         while ($register = $command->fetch()) {
-            $row = [];
+            $attributes = [];
             foreach ($register as $key => $value) {
                 if (in_array($key, $fillable)) {
-                    $row[$key] = $value;
+                    $attributes[$key] = $value;
                 }
             }
-            array_push($data, $row);
+
+            $object = new $class(...array_values($attributes));
+            $collection[] = $object;
         }
 
-        return $data;
-
-        // $table = static::$table;
-        // $class = static::$class;
-        // $fillable = static::$fillable;
-
-        // $sql = "SELECT * FROM $table";
-        // $command = Database::execute($sql);
-
-        // $collection = [];
-        // while ($register = $command->fetch()) {
-        //     // Filtra os atributos preenchíveis
-        //     $attributes = [];
-        //     foreach ($register as $key => $value) {
-        //         if (in_array($key, $fillable)) {
-        //             $attributes[$key] = $value;
-        //         }
-        //     }
-
-        //     // Instancia o objeto da classe específica
-        //     $object = new $class(...array_values($attributes));
-        //     $collection[] = $object;
-        // }
-
-        // return $collection;
+        return $collection;
     }
 
     public static function where()

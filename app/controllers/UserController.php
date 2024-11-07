@@ -1,21 +1,23 @@
-<?php
+    <?php
 
-class UserController 
-{
-    public function index()
+    class UserController 
     {
-        $users = User::all();
+        public function index()
+        {
+            $customers = Customer::all();
 
-        return Template::view('user.list', ['users' => $users]);
-    }
+            print_r($customers);
 
-    public function create()
-    {
-        echo "Login Page";
-    }
+            return Template::view('customer.list', ['customers' => $customers]);
+        }
 
-    public function register()
-    {
-        echo "Register Page";
+        public function create()
+        {
+            echo "Login Page";
+        }
+
+        public function register()
+        {
+            echo "Register Page";
+        }
     }
-}

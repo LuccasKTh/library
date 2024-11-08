@@ -25,15 +25,16 @@ abstract class Model {
     {
         return $this->id;
     }
+    
 
-    public function getTable()
+    public static function replaceForeignKeyNameToClassName($match)
     {
-        return $this->table;    
+        return ucfirst($match);
     }
 
-    public function getFillable()
+    public static function makeClass($match)
     {
-        return $this->fillable;    
+        return self::replaceForeignKeyNameToClassName($match);
     }
 
     public function save()
@@ -56,26 +57,30 @@ abstract class Model {
         $table = static::$table;
         $class = static::$class;
         $fillable = static::$fillable;
-
+        
         $sql = "SELECT * FROM $table";
         $command = Database::execute($sql);
+
+        foreach ($fillable as $field) {
+            if (preg_match('/(.*?)_id/', $field, $matches)) {
+                $class = self::makeClass($matches[1]);
+                var_dump($class::class);
+            }
+        }
 
         $collection = [];
         while ($register = $command->fetch()) {
             $attributes = [];
             foreach ($register as $key => $value) {
                 if (in_array($key, $fillable)) {
-                    $attributes[$key] = $value;
+                    $attributes[] = $value;
                 }
             }
-
-            $t = new $class(...array_values($register));
-            var_dump($t);
 
             $object = new $class(...array_values($attributes));
             $collection[] = $object;
         }
-
+        
         return $collection;
     }
 
@@ -86,6 +91,16 @@ abstract class Model {
 
     public static function find(int $id)
     {
+        $table = static::$table;
 
+        // $sql = "SELECT * FROM $table WHERE id = :id";
+        // $params = [
+        //     ':id' => $id
+        // ];
+        // $command = Database::execute($sql, $params);
+        
+        // var_dump($command->fetch());
+
+        return $table;
     }
 }

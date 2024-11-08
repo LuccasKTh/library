@@ -8,7 +8,7 @@ class Database
     {
         try {
             $env = self::getEnv();
-            $dns = self::makeDNS($env);
+            $dns = self::makeDNS($env);;
             return new PDO($dns, $env['DB_USER'], $env['DB_PASSWORD']);
         } catch (PDOException $e) {
             echo "Database connection error. ({$e->getMessage()})";

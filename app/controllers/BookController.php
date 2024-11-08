@@ -1,12 +1,12 @@
 <?php
 
-class UserController 
+class BookController 
 {
     public function index()
     {
-        $customers = Customer::all();
+        $books = Book::all();
 
-        return Template::view('customer.list', ['customers' => $customers]);
+        return Template::view('book.list', ['books' => $books]);
     }
 
     public function create()

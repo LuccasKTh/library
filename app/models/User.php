@@ -4,19 +4,19 @@ class User extends Model {
     private string $name;
     private string $email;
     private string $password;
-    private int $user_role;
+    private int $userRole;
+
     protected static $table = 'users';
     protected static $class = self::class;
+    protected static $fillable = ['id', 'name', 'email', 'cpf', 'password', 'user_role'];
 
-    protected static $fillable = ['id', 'name', 'email', 'password', 'user_role'];
-
-    public function __construct($id, $name, $email, $cpf, $password, $user_role)
+    public function __construct($id, $name, $email, $password, $userRole)
     {
         parent::__construct($id);
         $this->setName($name);
         $this->setEmail($email);
         $this->setPassword($password);
-        $this->setUserRole($user_role);
+        $this->setUserRole($userRole);
     }
 
     public function setName($name)
@@ -46,12 +46,12 @@ class User extends Model {
         }
     }
 
-    public function setUserRole($user_role)
+    public function setUserRole($userRole)
     {
-        if (!$user_role) {
+        if (!$userRole) {
             throw new Exception("Invalid user role");
         } else {
-            $this->user_role = $user_role;
+            $this->userRole = $userRole;
         }
     }
 
@@ -72,7 +72,7 @@ class User extends Model {
 
     public function getUserRole()
     {
-        return $this->user_role;    
+        return $this->userRole;    
     }
 
     public function login()

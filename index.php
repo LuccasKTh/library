@@ -8,17 +8,44 @@ $request = $_SERVER['REQUEST_URI'];
 $request = ltrim($request, '/');
 
 switch (true) {
-    case ($request === ''):
-        Route::resource(UserController::class, 'index');
-        break;
-
     case ($request === 'login'):
         Route::resource(UserController::class, 'create');
         break;
 
-    case preg_match('/^user\/(\d+)$/', $request, $matches):
+    case ($request === 'customer'):
+        Route::resource(UserController::class, 'index');
+        break;
+
+    case preg_match('/^customer\/(\d+)$/', $request, $matches):
         $id = $matches[1];
-        echo "ID capturado: $id";
+        Route::resource(UserController::class, 'show');
+        break;
+
+    case ($request === 'author'):
+        Route::resource(AuthorController::class, 'index');
+        break;
+
+    case preg_match('/^author\/(\d+)$/', $request, $matches):
+        $id = $matches[1];
+        Route::resource(AuthorController::class, 'show');
+        break;
+
+    case ($request === 'category'):
+        Route::resource(CategoryController::class, 'index');
+        break;
+
+    case preg_match('/^category\/(\d+)$/', $request, $matches):
+        $id = $matches[1];
+        Route::resource(CategoryController::class, 'show');
+        break;
+
+    case ($request === 'book'):
+        Route::resource(BookController::class, 'index');
+        break;
+
+    case preg_match('/^book\/(\d+)$/', $request, $matches):
+        $id = $matches[1];
+        Route::resource(BookController::class, 'show');
         break;
 
     default:

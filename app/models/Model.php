@@ -2,6 +2,7 @@
 
 abstract class Model {
     private int $id;
+
     protected static $table;
     protected static $class;
     protected static $fillable;
@@ -68,6 +69,9 @@ abstract class Model {
                 }
             }
 
+            $t = new $class(...array_values($register));
+            var_dump($t);
+
             $object = new $class(...array_values($attributes));
             $collection[] = $object;
         }
@@ -80,8 +84,8 @@ abstract class Model {
         
     }
 
-    public static function find()
+    public static function find(int $id)
     {
-        
+
     }
 }

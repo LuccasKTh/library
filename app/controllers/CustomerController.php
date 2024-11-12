@@ -1,6 +1,6 @@
 <?php
 
-class UserController 
+class CustomerController 
 {
     public function index()
     {
@@ -11,7 +11,7 @@ class UserController
 
     public function create()
     {
-        echo "Login Page";
+        return Template::view('customer.form');
     }
 
     public function register()

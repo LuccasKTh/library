@@ -18,7 +18,8 @@ class Database
     public static function getEnv()
     {
         $dotenv = Dotenv::createImmutable(getcwd());
-        return $dotenv->load();    
+        $dotenv->load();    
+        return $_ENV;
     }
 
     public static function makeDNS($env)

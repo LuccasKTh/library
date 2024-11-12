@@ -3,19 +3,21 @@
 class Book extends Model {
     private string $title;
     private string $publication;
-    private string $book_cover;
+    private string $bookCover;
+    private string $price;
     private Category $category;
 
     protected static $table = 'books';
     protected static $class = self::class;
-    protected static $fillable = ['id', 'title', 'publication', 'book_cover', 'category_id'];
+    protected static $fillable = ['id', 'title', 'publication', 'book_cover', 'price', 'category_id'];
 
-    public function __construct($id, $title, $publication, $book_cover, $category)
+    public function __construct($id, $title, $publication, $bookCover, $price, $category)
     {
         parent::__construct($id);
         $this->setTitle($title);
         $this->setPublication($publication);
-        $this->setBookCover($book_cover);
+        $this->setBookCover($bookCover);
+        $this->setPrice($price);
         $this->setCategory($category);
     }
 
@@ -37,12 +39,21 @@ class Book extends Model {
         }
     }
 
-    public function setBookCover($book_cover)
+    public function setBookCover($bookCover)
     {
-        if (!$book_cover) {
+        if (!$bookCover) {
             throw new Exception("Invalid book cover");
         } else {
-            $this->book_cover = $book_cover;
+            $this->bookCover = $bookCover;
+        }
+    }
+
+    public function setPrice($price)
+    {
+        if (!$price) {
+            throw new Exception("Invalid price");
+        } else {
+            $this->price = $price;
         }
     }
 
@@ -67,7 +78,12 @@ class Book extends Model {
 
     public function getBookCover()
     {
-        return $this->book_cover;    
+        return $this->bookCover;    
+    }
+
+    public function getPrice()
+    {
+        return $this->price;    
     }
 
     public function getCategory()

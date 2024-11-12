@@ -3,47 +3,69 @@
 require 'vendor/autoload.php';
 require_once "./autoload.php";
 
-$request = $_SERVER['REQUEST_URI'];
+$route = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
+$request = $_GET ? $_GET : $_POST;
 
-$request = ltrim($request, '/');
+$route = ltrim($route, '/');
 
 switch (true) {
-    case ($request === 'login'):
-        Route::resource(UserController::class, 'create');
+    case ($route === ''):
+        header('location: /customer');
         break;
 
-    case ($request === 'customer'):
-        Route::resource(UserController::class, 'index');
+    case ($route === 'index.php'):
+        header('location: /customer');
         break;
 
-    case preg_match('/^customer\/(\d+)$/', $request, $matches):
+    case ($route === 'login'):
+        Route::resource(CustomerController::class, 'create');
+        break;
+
+    case ($route === 'customer'):
+        Route::resource(CustomerController::class, 'index');
+        break;
+
+    case ($route === 'customer/create'):
+        Route::resource(CustomerController::class, 'create');
+        break;
+
+    case preg_match('/^customer\/(\d+)$/', $route, $matches):
         $id = $matches[1];
-        Route::resource(UserController::class, 'show');
+        Route::resource(CustomerController::class, 'show');
         break;
 
-    case ($request === 'author'):
+    case ($route === 'author' && $method === 'GET'):
         Route::resource(AuthorController::class, 'index');
         break;
 
-    case preg_match('/^author\/(\d+)$/', $request, $matches):
+    case ($route === 'author/create' && $method === 'GET'):
+        Route::resource(AuthorController::class, 'create');
+        break;
+
+    case ($route === 'author' && $method === 'POST'):
+        Route::resource(AuthorController::class, 'store', $request);
+        break;
+
+    case preg_match('/^author\/(\d+)$/', $route, $matches):
         $id = $matches[1];
         Route::resource(AuthorController::class, 'show');
         break;
 
-    case ($request === 'category'):
+    case ($route === 'category'):
         Route::resource(CategoryController::class, 'index');
         break;
 
-    case preg_match('/^category\/(\d+)$/', $request, $matches):
+    case preg_match('/^category\/(\d+)$/', $route, $matches):
         $id = $matches[1];
         Route::resource(CategoryController::class, 'show');
         break;
 
-    case ($request === 'book'):
+    case ($route === 'book'):
         Route::resource(BookController::class, 'index');
         break;
 
-    case preg_match('/^book\/(\d+)$/', $request, $matches):
+    case preg_match('/^book\/(\d+)$/', $route, $matches):
         $id = $matches[1];
         Route::resource(BookController::class, 'show');
         break;

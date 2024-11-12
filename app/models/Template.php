@@ -71,31 +71,48 @@ class Template {
         return $viewContent;
     }
 
-    public function mergeData($viewContent, $data) 
+    public function mergeData($viewContent, $data = []) 
     {
         $renderedContent = ''; 
+
+        if ($data) {
+            foreach ($data as $dataKey => $rows) {
+                if (preg_match('/:'.$dataKey.'{/', $viewContent)) {
+                    foreach ($rows as $row) {
+                        $rowContent = $viewContent;
     
-        foreach ($data as $dataKey => $rows) {
-            if (preg_match('/:'.$dataKey.'{/', $viewContent)) {
-                foreach ($rows as $row) {
-                    $rowContent = $viewContent;
-
-                    $methods = get_class_methods($row);
-
-                    foreach ($methods as $method) {
-                        if (preg_match('/:'.$dataKey.'{'.$method.'}/', $viewContent, $matches)) {
-                            $value = $row->$method();
-                            $rowContent = str_replace($matches[0], $value, $rowContent);
+                        $methods = get_class_methods($row);
+    
+                        foreach ($methods as $method) {
+                            if (preg_match('/:'.$dataKey.'{'.$method.'}/', $viewContent, $matches)) {
+                                $value = $row->$method();
+                                $rowContent = str_replace($matches[0], $value, $rowContent);
+                            } elseif (preg_match('/:'.$dataKey.'{'.$method.'.(.*?)}/', $viewContent, $matches)) {
+                                $value = $row->$method();
+                                $method = $matches[1];
+                                $value = $value->$method();
+                                $rowContent = str_replace($matches[0], $value, $rowContent);
+                            }
                         }
+    
+                        $renderedContent .= $rowContent;
                     }
-
-                    $renderedContent .= $rowContent;
+                } else {
+                    return $viewContent;
                 }
-            } else {
-                return $viewContent;
+            }
+            $viewContent = $renderedContent;
+        } else {
+            preg_match_all('/:(.*){(.*)}/', $viewContent, $matches);
+            foreach ($matches[0] as $value) {
+                if (preg_match('/{id}/', $value)) {
+                    $viewContent = str_replace($value, 0, $viewContent);
+                } else {
+                    $viewContent = str_replace($value, '', $viewContent);
+                }
             }
         }
-    
-        return $renderedContent;
+        
+        return $viewContent;
     }   
 }

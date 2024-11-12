@@ -1,9 +1,9 @@
 <?php
 
 class Route {
-    public static function resource($controller, $method)
+    public static function resource($controller, $method, $request = [])
     {
         $instance = new $controller;
-        return $instance->$method();
+        return $instance->$method($request);
     }
 }

@@ -1,0 +1,43 @@
+<div class="col-span-4 flex w-full flex-col">
+    <div class="divider divider-neutral">Autor</div>
+</div>
+<form method='POST' action="/author">
+    <div class="overflow-x-auto my-5 border border-neutral rounded-2xl p-3">
+        <div class="flex flex-col gap-1 items-center">
+
+            <input type="hidden" name="id" id="id" value=":author{id}" readonly>
+
+            <label for="name" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Primeiro Nome</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="name" 
+                    id="name" 
+                    value=":author{name}"
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="last_name" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Segundo Nome</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="last_name" 
+                    id="last_name" 
+                    value=":author{last_name}"
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <div>
+                <a href="/author" class="btn btn-neutral">Voltar</a>
+                <input type="submit" class="btn btn-neutral" value="Salvar">
+            </div>
+            
+        </div>
+    </div>
+</form>

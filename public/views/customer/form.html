@@ -1,0 +1,79 @@
+<div class="col-span-4 flex w-full flex-col">
+    <div class="divider divider-neutral">Cliente</div>
+</div>
+<form method='POST' action="">
+    <div class="overflow-x-auto my-5 border border-neutral rounded-2xl p-3">
+        <div class="flex flex-col items-center">
+
+            <input type="hidden" name="id" id="id" value=":id" readonly>
+
+            <label for="name" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Nome</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="name" 
+                    id="name" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="email" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Email</span>
+                </div>
+                <input 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="cpf" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">CPF</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="cpf" 
+                    id="cpf" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="password" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Senha</span>
+                </div>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+            
+            <div class="flex">
+                <span class="label-text">Tipo de usuário</span>
+                <input 
+                    checked="checked"
+                    type="radio"
+                    name="user_role" 
+                    id="user_role"
+                    class="radio radio-sm" 
+                />
+                <label for="user_role">A</label>
+                <input 
+                    type="radio"
+                    name="user_role" 
+                    id="user_role" 
+                    class="radio radio-sm" 
+                />
+                <label for="user_role">A</label>
+            </div>
+            
+        </div>
+    </div>
+</form>

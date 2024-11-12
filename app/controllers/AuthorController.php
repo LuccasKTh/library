@@ -8,5 +8,16 @@ class AuthorController {
 
         return Template::view('author.list', ['authors' => $authors]);
     }
+
+    public function create()
+    {
+        return Template::view('author.form');    
+    }
+
+    public function store($request)
+    {
+        $author = new Author(...array_values($request));
+        $author->save();
+    }
     
 }

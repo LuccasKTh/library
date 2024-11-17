@@ -50,15 +50,23 @@ abstract class Model {
     {
         $table = $this->getTable();
         $fillable = $this->getFillable();
-        
-        $sql = "INSERT INTO $table";
 
-        $sql .= " (";
-        foreach ($fillable as $fill) {
-            if ($fill == 'id') {
-                
-            }
+        var_dump($this);
+
+        $filtredFillable = array_filter($fillable, fn($coluna) => $coluna !== 'id');
+        // $valores_filtrados = array_filter($valores, fn($valor, $chave) => $chave !== 'id', ARRAY_FILTER_USE_BOTH);
+
+        $getters = [];
+        foreach ($filtredFillable as $fill) {
+            $method = strtolower("get$fill");
+            array_push($getters, $method);
         }
+        var_dump($getters);
+        
+        exit;
+        // $sql = "INSERT INTO $table (".implode(', ', $filtredFillable).") VALUES (".implode(', ', $values).")";
+
+        // var_dump($sql);
     }
 
     public function update()

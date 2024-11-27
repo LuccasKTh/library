@@ -21,7 +21,7 @@ abstract class Model {
         }
     }
 
-    public function getId()
+    public function id()
     {
         return $this->id;
     }
@@ -50,24 +50,23 @@ abstract class Model {
     {
         $table = $this->getTable();
         $fillable = $this->getFillable();
-
-        var_dump($this);
-
+    
         $filtredFillable = array_filter($fillable, fn($coluna) => $coluna !== 'id');
-        // $valores_filtrados = array_filter($valores, fn($valor, $chave) => $chave !== 'id', ARRAY_FILTER_USE_BOTH);
-
+    
         $getters = [];
         foreach ($filtredFillable as $fill) {
-            $method = strtolower("get$fill");
-            array_push($getters, $method);
+            $getters[] = $this->$fill();
         }
-        var_dump($getters);
+    
+        $placeholders = array_map(fn($item) => ':' . $item, $filtredFillable);
         
-        exit;
-        // $sql = "INSERT INTO $table (".implode(', ', $filtredFillable).") VALUES (".implode(', ', $values).")";
-
-        // var_dump($sql);
+        $params = array_combine($placeholders, $getters);
+    
+        $sql = "INSERT INTO $table (".implode(', ', $filtredFillable).") VALUES (".implode(', ', $placeholders).")";
+    
+        return Database::execute($sql, $params);
     }
+    
 
     public function update()
     {

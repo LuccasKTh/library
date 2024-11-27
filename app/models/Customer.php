@@ -6,6 +6,8 @@ class Customer extends User
     
     protected static $class = self::class;
 
+    protected static $fillable = ['id', 'name', 'email', 'password', 'user_role', 'cpf'];
+
     public function __construct($id, $name, $email, $cpf, $password, $user_role)
     {
         parent::__construct($id, $name, $email, $password, $user_role);
@@ -21,7 +23,7 @@ class Customer extends User
         }
     }
 
-    public function getCpf()
+    public function cpf()
     {
         return $this->cpf;    
     }

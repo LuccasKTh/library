@@ -6,9 +6,9 @@ CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    cpf VARCHAR(20),
     password VARCHAR(255) NOT NULL,
-    user_role INT NOT NULL
+    user_role INT NOT NULL,
+    cpf VARCHAR(20)
 );
 
 CREATE TABLE authors (

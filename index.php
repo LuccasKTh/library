@@ -22,12 +22,16 @@ switch (true) {
         Route::resource(CustomerController::class, 'create');
         break;
 
-    case ($route === 'customer'):
+    case ($route === 'customer' && $method === 'GET'):
         Route::resource(CustomerController::class, 'index');
         break;
 
     case ($route === 'customer/create'):
         Route::resource(CustomerController::class, 'create');
+        break;
+
+    case ($route === 'customer' && $method === 'POST'):
+        Route::resource(CustomerController::class, 'store', $request);
         break;
 
     case preg_match('/^customer\/(\d+)$/', $route, $matches):

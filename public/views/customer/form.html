@@ -1,79 +1,82 @@
 <div class="col-span-4 flex w-full flex-col">
     <div class="divider divider-neutral">Cliente</div>
 </div>
-<form method='POST' action="">
+<form method='POST' action="/customer">
     <div class="overflow-x-auto my-5 border border-neutral rounded-2xl p-3">
-        <div class="flex flex-col items-center">
-
-            <input type="hidden" name="id" id="id" value=":id" readonly>
-
-            <label for="name" class="form-control w-full max-w-sm">
+        <div class="flex flex-col gap-1 items-center">
+                <input type="hidden" name="id" id="id" value=":id" readonly>
+    
+                <label for="name" class="form-control w-full max-w-sm">
+                    <div class="label">
+                        <span class="label-text">Nome</span>
+                    </div>
+                    <input 
+                        type="text" 
+                        name="name" 
+                        id="name" 
+                        class="input input-bordered input-sm w-full" 
+                    />
+                </label>
+    
+                <label for="email" class="form-control w-full max-w-sm">
+                    <div class="label">
+                        <span class="label-text">Email</span>
+                    </div>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        class="input input-bordered input-sm w-full" 
+                    />
+                </label>
+    
+                <label for="cpf" class="form-control w-full max-w-sm">
+                    <div class="label">
+                        <span class="label-text">CPF</span>
+                    </div>
+                    <input 
+                        type="text" 
+                        name="cpf" 
+                        id="cpf" 
+                        class="input input-bordered input-sm w-full" 
+                    />
+                </label>
+    
+                <label for="password" class="form-control w-full max-w-sm">
+                    <div class="label">
+                        <span class="label-text">Senha</span>
+                    </div>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        class="input input-bordered input-sm w-full" 
+                    />
+                </label>
+                
                 <div class="label">
-                    <span class="label-text">Nome</span>
+                    <span class="label-text">Tipo de usuário</span>
                 </div>
-                <input 
-                    type="text" 
-                    name="name" 
-                    id="name" 
-                    class="input input-bordered input-sm w-full" 
-                />
-            </label>
-
-            <label for="email" class="form-control w-full max-w-sm">
-                <div class="label">
-                    <span class="label-text">Email</span>
+                <div class="flex flex-col">
+                    <div>
+                        <input
+                            checked
+                            type="radio"
+                            name="user_role" 
+                            id="user_role" 
+                            class="radio radio-xs"
+                            value="1"
+                        />
+                        <label for="user_role">Cliente</label>
+                    </div>
                 </div>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    class="input input-bordered input-sm w-full" 
-                />
-            </label>
-
-            <label for="cpf" class="form-control w-full max-w-sm">
-                <div class="label">
-                    <span class="label-text">CPF</span>
+                
+                
+                <div>
+                    <a href="/customer" class="btn btn-neutral">Voltar</a>
+                    <input type="submit" class="btn btn-neutral" value="Salvar">
                 </div>
-                <input 
-                    type="text" 
-                    name="cpf" 
-                    id="cpf" 
-                    class="input input-bordered input-sm w-full" 
-                />
-            </label>
-
-            <label for="password" class="form-control w-full max-w-sm">
-                <div class="label">
-                    <span class="label-text">Senha</span>
-                </div>
-                <input 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    class="input input-bordered input-sm w-full" 
-                />
-            </label>
-            
-            <div class="flex">
-                <span class="label-text">Tipo de usuário</span>
-                <input 
-                    checked="checked"
-                    type="radio"
-                    name="user_role" 
-                    id="user_role"
-                    class="radio radio-sm" 
-                />
-                <label for="user_role">A</label>
-                <input 
-                    type="radio"
-                    name="user_role" 
-                    id="user_role" 
-                    class="radio radio-sm" 
-                />
-                <label for="user_role">A</label>
-            </div>
-            
+        
         </div>
     </div>
 </form>

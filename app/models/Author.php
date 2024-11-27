@@ -33,12 +33,12 @@ class Author extends Model {
         }
     }
 
-    public function getName()
+    public function name()
     {
         return $this->name;    
     }
 
-    public function getLastName()
+    public function last_name()
     {
         return $this->lastName;    
     }

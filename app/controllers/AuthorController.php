@@ -18,6 +18,8 @@ class AuthorController {
     {
         $author = new Author(...array_values($request));
         $author->save();
+
+        return header('Location: /author');
     }
     
 }

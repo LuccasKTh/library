@@ -8,7 +8,7 @@ class User extends Model {
 
     protected static $table = 'users';
     protected static $class = self::class;
-    protected static $fillable = ['id', 'name', 'email', 'cpf', 'password', 'user_role'];
+    protected static $fillable = ['id', 'name', 'email', 'password', 'user_role'];
 
     public function __construct($id, $name, $email, $password, $userRole)
     {
@@ -55,22 +55,22 @@ class User extends Model {
         }
     }
 
-    public function getName()
+    public function name()
     {
         return $this->name;    
     }
 
-    public function getEmail()
+    public function email()
     {
         return $this->email;    
     }
 
-    public function getPassword()
+    public function password()
     {
         return $this->password;    
     }
 
-    public function getUserRole()
+    public function user_role()
     {
         return $this->userRole;    
     }

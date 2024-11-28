@@ -4,7 +4,7 @@
 <form method='POST' action="/customer">
     <div class="overflow-x-auto my-5 border border-neutral rounded-2xl p-3">
         <div class="flex flex-col gap-1 items-center">
-                <input type="hidden" name="id" id="id" value=":id" readonly>
+                <input type="hidden" name="id" id="id" value="0" readonly>
     
                 <label for="name" class="form-control w-full max-w-sm">
                     <div class="label">
@@ -54,29 +54,10 @@
                     />
                 </label>
                 
-                <div class="label">
-                    <span class="label-text">Tipo de usuário</span>
-                </div>
-                <div class="flex flex-col">
-                    <div>
-                        <input
-                            checked
-                            type="radio"
-                            name="user_role" 
-                            id="user_role" 
-                            class="radio radio-xs"
-                            value="1"
-                        />
-                        <label for="user_role">Cliente</label>
-                    </div>
-                </div>
-                
-                
                 <div>
                     <a href="/customer" class="btn btn-neutral">Voltar</a>
                     <input type="submit" class="btn btn-neutral" value="Salvar">
                 </div>
-        
         </div>
     </div>
 </form>

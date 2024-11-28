@@ -1,0 +1,72 @@
+<div class="col-span-4 flex w-full flex-col">
+    <div class="divider divider-neutral">Livro</div>
+</div>
+<form method='POST' action="/book">
+    <div class="overflow-x-auto my-5 border border-neutral rounded-2xl p-3">
+        <div class="flex flex-col gap-1 items-center">
+            <input type="hidden" name="id" id="id" value="0" readonly>
+
+            <label for="title" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Título</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="title" 
+                    id="title" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="publication" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Publicação</span>
+                </div>
+                <input 
+                    type="number" 
+                    name="publication" 
+                    id="publication" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="book_cover" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Capa do livro</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="book_cover"
+                    id="book_cover" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="price" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Preço</span>
+                </div>
+                <input 
+                    type="text" 
+                    name="price" 
+                    id="price" 
+                    class="input input-bordered input-sm w-full" 
+                />
+            </label>
+
+            <label for="category_id" class="form-control w-full max-w-sm">
+                <div class="label">
+                    <span class="label-text">Categoria</span>
+                </div>
+                <select name="category_id" id="category_id" class="select select-bordered select-sm">
+                    :option
+                </select>
+            </label>
+            
+            <div>
+                <a href="/book" class="btn btn-neutral">Voltar</a>
+                <input type="submit" class="btn btn-neutral" value="Salvar">
+            </div>
+        </div>
+    </div>
+</form>

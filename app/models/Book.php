@@ -66,27 +66,27 @@ class Book extends Model {
         }
     }
 
-    public function getTitle()
+    public function title()
     {
         return $this->title;    
     }
 
-    public function getPublication()
+    public function publication()
     {
         return $this->publication;    
     }
 
-    public function getBookCover()
+    public function book_cover()
     {
         return $this->bookCover;    
     }
 
-    public function getPrice()
+    public function price()
     {
         return $this->price;    
     }
 
-    public function getCategory()
+    public function category_id()
     {
         return $this->category;
     }

@@ -11,11 +11,28 @@ class BookController
 
     public function create()
     {
-        echo "Login Page";
+        $categories = Category::all();
+        return Template::view('book.category', ['categories'=> $categories]);
     }
 
-    public function register()
+    public function store($request)
     {
-        echo "Register Page";
+        $category_id = $request['category_id'];
+        $category = Category::find($category_id);
+        
+        $attributes = Request::order(Book::getFillable(), $request);
+        $attributes['category_id'] = $category;
+
+        $author = new Book(...array_values($attributes));
+        $author->save();
+
+        return header('Location: /book');
+    }
+
+    public function show($id)
+    {
+        $book = Book::find($id);
+
+        return Template::view('book.show', ['book' => [$book]]);
     }
 }

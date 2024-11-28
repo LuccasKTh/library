@@ -43,7 +43,7 @@ abstract class Model {
 
     public static function makeClass($match)
     {
-        return ucfirst($match);
+        return ucfirst($match); 
     }
 
     public function save()
@@ -54,14 +54,18 @@ abstract class Model {
         $filtredFillable = array_filter($fillable, fn($coluna) => $coluna !== 'id');
     
         $getters = [];
-        foreach ($filtredFillable as $fill) {
-            $getters[] = $this->$fill();
+        foreach ($filtredFillable as $field) {
+            if (is_object($this->$field())) {
+                $getters[] = $this->$field()->id();
+            } else {
+                $getters[] = $this->$field();
+            }
         }
-    
+        
         $placeholders = array_map(fn($item) => ':' . $item, $filtredFillable);
         
         $params = array_combine($placeholders, $getters);
-    
+        
         $sql = "INSERT INTO $table (".implode(', ', $filtredFillable).") VALUES (".implode(', ', $placeholders).")";
     
         return Database::execute($sql, $params);
@@ -89,22 +93,37 @@ abstract class Model {
         $command = Database::execute($sql);
 
         $collection = self::makeClassList($command, $fillable, $class);
-        
+
         return $collection;
     }
 
     public static function makeClassList($command, $fillable, $class)
     {
         $collection = [];
+
         while ($register = $command->fetch()) {
             $attributes = [];
-            foreach ($register as $key => $value) {
-                if (in_array($key, $fillable)) {
-                    if (preg_match('/(.*?)_id/', $key, $matches)) {
-                        $classFK = self::makeClass($matches[1]);
-                        $attributes[] = $classFK::find($value);
+
+            foreach ($fillable as $field) {
+                if (array_key_exists($field, $register)) {
+                    $value = $register[$field];
+
+                    if (preg_match('/(.*?)_id$/', $field, $matches)) {
+                        $relatedClass = self::makeClass($matches[1]);
+
+                        if (class_exists($relatedClass) && method_exists($relatedClass, 'find')) {
+                            $relatedInstance = $relatedClass::find($value);
+
+                            if ($relatedInstance) {
+                                $attributes[$field] = $relatedInstance;
+                            } else {
+                                throw new Exception("Relação não encontrada.");
+                            }
+                        } else {
+                            throw new Exception("Classe relacionada {$relatedClass} inválida ou método 'find' não encontrado.");
+                        }
                     } else {
-                        $attributes[] = $value;
+                        $attributes[$field] = $value;
                     }
                 }
             }

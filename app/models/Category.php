@@ -22,7 +22,7 @@ class Category extends Model {
         }
     }
 
-    public function getDescription()
+    public function description()
     {
         return $this->description;    
     }

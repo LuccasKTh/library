@@ -9,6 +9,10 @@ $request = $_GET ? $_GET : $_POST;
 
 $route = ltrim($route, '/');
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 switch (true) {
     case ($route === ''):
         header('location: /customer');
@@ -56,22 +60,38 @@ switch (true) {
         Route::resource(AuthorController::class, 'show');
         break;
 
-    case ($route === 'category'):
+    case ($route === 'category' && $method === 'GET'):
         Route::resource(CategoryController::class, 'index');
+        break;
+
+    case ($route === 'category/create' && $method === 'GET'):
+        Route::resource(CategoryController::class, 'create');
+        break;
+
+    case ($route === 'category' && $method === 'POST'):
+        Route::resource(CategoryController::class, 'store', $request);
         break;
 
     case preg_match('/^category\/(\d+)$/', $route, $matches):
         $id = $matches[1];
-        Route::resource(CategoryController::class, 'show');
+        Route::resource(CategoryController::class, 'show', $id);
         break;
 
-    case ($route === 'book'):
+    case ($route === 'book' && $method === 'GET'):
         Route::resource(BookController::class, 'index');
+        break;
+
+    case ($route === 'book/create' && $method === 'GET'):
+        Route::resource(BookController::class, 'create');
+        break;
+        
+    case ($route === 'book' && $method === 'POST'):
+        Route::resource(BookController::class, 'store', $request);
         break;
 
     case preg_match('/^book\/(\d+)$/', $route, $matches):
         $id = $matches[1];
-        Route::resource(BookController::class, 'show');
+        Route::resource(BookController::class, 'show', $id);
         break;
 
     default:

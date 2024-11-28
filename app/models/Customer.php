@@ -8,7 +8,7 @@ class Customer extends User
 
     protected static $fillable = ['id', 'name', 'email', 'password', 'user_role', 'cpf'];
 
-    public function __construct($id, $name, $email, $cpf, $password, $user_role)
+    public function __construct($id, $name, $email, $password, $user_role, $cpf)
     {
         parent::__construct($id, $name, $email, $password, $user_role);
         $this->setCpf($cpf);

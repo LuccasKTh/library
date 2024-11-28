@@ -1,7 +1,7 @@
 <?php
 
-class AuthorController {
-
+class AuthorController 
+{
     public function index()
     {
         $authors = Author::all();
@@ -16,7 +16,9 @@ class AuthorController {
 
     public function store($request)
     {
-        $author = new Author(...array_values($request));
+        $attributes = Request::order(Author::getFillable(), $request);
+
+        $author = new Author(...array_values($attributes));
         $author->save();
 
         return header('Location: /author');

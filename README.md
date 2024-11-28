@@ -1,11 +1,17 @@
-Rodar os comandos:
-  npm i
-  composer i
+## Rodar os comandos:
+```
+  npm install
+```
+```
+  composer install
+```
 
-Após instalar as dependências:
-  Copiar e colar o arquivo .env.exemple e renomar para .env
-  Atualizar os dados de conexão no .env
-  Rodar os arquivos .sql na pasta config
+## Após instalar as dependências:
+  1. Copiar e colar o arquivo .env.exemple e renomar para .env
+  2. Atualizar os dados de conexão no .env
+  3. Rodar os arquivos .sql na pasta config
   
-Rodar o comando:
+## Rodar o comando:
+```
   npm run tw
+```

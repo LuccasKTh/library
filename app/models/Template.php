@@ -148,11 +148,17 @@ class Template {
     public function create($appContent)
     {
         $model = Route::uriModel();
+        $uri = Route::makeCleanUri();
+        $method = Route::getMethod();
         
-        if (preg_match('/:create/', $appContent)) {
-            $create = $this->getView('layouts.create');
-            $create = str_replace(':link',"/$model/create", $create);
-            $appContent = str_replace(':create',$create, $appContent);
+        if ($method === "GET" && $uri == $model) {
+            if (preg_match('/:create/', $appContent)) {
+                $create = $this->getView('layouts.create');
+                $create = str_replace(':link',"/$model/create", $create);
+                $appContent = str_replace(':create',$create, $appContent);
+            }
+        } else {
+            $appContent = str_replace(':create', '', $appContent);
         }
 
         return $appContent;

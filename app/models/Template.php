@@ -28,6 +28,7 @@ class Template {
 
         $appContent = $instance->makeApp();
         $appContent = $instance->makeContent($appContent, $sectionView);
+        $appContent = $instance->create($appContent);
 
         echo $appContent;
     }
@@ -59,13 +60,30 @@ class Template {
     {
         $viewContent = $this->getView($view);
         $viewContent = $this->mergeData($viewContent, $data);
+        // $viewContent = $this->create($viewContent);
+        $viewContent = $this->action($viewContent);
         $match = preg_match('/:section\{(.*?):(.*?)\}/', $viewContent, $matches);
 
         if ($match) {
-            $viewContent = str_replace($matches[0], '', $viewContent);
-            $content = $this->searchSection($matches[1], $data);
-            $content = str_replace(':'.$matches[2], $viewContent, $content);
-            return $content;
+            if (array_filter($data)) {
+                $viewContent = str_replace($matches[0], '', $viewContent);
+                $content = $this->searchSection($matches[1], $data);
+                $content = str_replace(':'.$matches[2], $viewContent, $content);
+                $viewContent = $content;
+            } else {
+                $empty = file_get_contents($this->dir . $this->views . $this->replaceViewName('layouts.empty'));
+                $viewContent = $empty;
+            }
+        }
+
+        if (preg_match_all('/:(.*){(.*)}/', $viewContent, $matches)) {
+            foreach ($matches[0] as $match) {
+                if (preg_match('/:(.*?)\{id\}/', $viewContent)) {
+                    $viewContent = str_replace($match,0, $viewContent);
+                } else {
+                    $viewContent = str_replace($match,'', $viewContent);
+                }
+            }
         }
 
         return $viewContent;
@@ -73,46 +91,71 @@ class Template {
 
     public function mergeData($viewContent, $data = []) 
     {
-        $renderedContent = ''; 
+        $renderedContent = $viewContent; 
 
-        if ($data) {
+        if (array_filter($data)) {
             foreach ($data as $dataKey => $rows) {
                 if (preg_match('/:'.$dataKey.'{/', $viewContent)) {
+                    $renderedContent = '';
                     foreach ($rows as $row) {
+                        $class = $row;
                         $rowContent = $viewContent;
-    
-                        $methods = get_class_methods($row);
-    
+
+                        $methods = get_class_methods($class);
+
                         foreach ($methods as $method) {
                             if (preg_match('/:'.$dataKey.'{'.$method.'}/', $viewContent, $matches)) {
-                                $value = $row->$method();
+                                $value = $class->$method();
                                 $rowContent = str_replace($matches[0], $value, $rowContent);
                             } elseif (preg_match('/:'.$dataKey.'{'.$method.'.(.*?)}/', $viewContent, $matches)) {
-                                $value = $row->$method();
+                                $value = $class->$method();
                                 $method = $matches[1];
                                 $value = $value->$method();
                                 $rowContent = str_replace($matches[0], $value, $rowContent);
                             }
-                        }
-    
+                        }              
+
                         $renderedContent .= $rowContent;
                     }
-                } else {
-                    return $viewContent;
                 }
             }
             $viewContent = $renderedContent;
-        } else {
-            preg_match_all('/:(.*){(.*)}/', $viewContent, $matches);
-            foreach ($matches[0] as $value) {
-                if (preg_match('/{id}/', $value)) {
-                    $viewContent = str_replace($value, 0, $viewContent);
-                } else {
-                    $viewContent = str_replace($value, '', $viewContent);
-                }
-            }
         }
         
         return $viewContent;
-    }   
+    }
+
+    public function action($viewContent)
+    {
+        $method = Route::uriMethodController();
+        $controller = Route::uriModel();
+
+        if (preg_match_all('/:action/', $viewContent)) {
+            switch ($method) {
+                case 'create':
+                    $viewContent = str_replace(':action',"/".$controller, $viewContent);
+                    break;
+
+                case 'edit':
+                    $viewContent = str_replace(':action',"/$controller/update", $viewContent);
+                    break;
+            }
+        }
+
+        return $viewContent;
+    }
+
+    public function create($appContent)
+    {
+        $model = Route::uriModel();
+        
+        if (preg_match('/:create/', $appContent)) {
+            $create = $this->getView('layouts.create');
+            $create = str_replace(':link',"/$model/create", $create);
+            $appContent = str_replace(':create',$create, $appContent);
+        }
+
+        return $appContent;
+    }
+
 }

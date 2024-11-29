@@ -3,7 +3,7 @@
 class Book extends Model {
     private string $title;
     private string $publication;
-    private string $bookCover;
+    private string $book_cover;
     private string $price;
     private Category $category;
 
@@ -44,7 +44,7 @@ class Book extends Model {
         if (!$bookCover) {
             throw new Exception("Invalid book cover");
         } else {
-            $this->bookCover = $bookCover;
+            $this->book_cover = $bookCover;
         }
     }
 
@@ -78,7 +78,7 @@ class Book extends Model {
 
     public function book_cover()
     {
-        return $this->bookCover;    
+        return $this->book_cover;    
     }
 
     public function price()

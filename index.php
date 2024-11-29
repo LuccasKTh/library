@@ -3,15 +3,15 @@
 require 'vendor/autoload.php';
 require_once "./autoload.php";
 
-$route = $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
+$route = Route::getUri();
+$method = Route::getMethod();
 $request = $_GET ? $_GET : $_POST;
 
-$route = ltrim($route, '/');
+$route = Route::makeCleanUri();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 switch (true) {
     case ($route === ''):
@@ -92,6 +92,20 @@ switch (true) {
     case preg_match('/^book\/(\d+)$/', $route, $matches):
         $id = $matches[1];
         Route::resource(BookController::class, 'show', $id);
+        break;
+
+    case preg_match('/^book\/(\d+)\/edit$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(BookController::class,'edit', $id);
+        break;
+
+    case ($route === 'book/update' && $method === 'POST'):
+        Route::resource(BookController::class,'update', $request);
+        break;
+
+    case preg_match('/^book\/(\d+)\/destroy$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(BookController::class,'destroy', $id);
         break;
 
     default:

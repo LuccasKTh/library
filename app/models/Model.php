@@ -53,33 +53,58 @@ abstract class Model {
     
         $filtredFillable = array_filter($fillable, fn($coluna) => $coluna !== 'id');
     
-        $getters = [];
+        $params = [];
         foreach ($filtredFillable as $field) {
             if (is_object($this->$field())) {
-                $getters[] = $this->$field()->id();
+                $params[":$field"] = $this->$field()->id();
             } else {
-                $getters[] = $this->$field();
+                $params[":$field"] = $this->$field();
             }
         }
-        
-        $placeholders = array_map(fn($item) => ':' . $item, $filtredFillable);
-        
-        $params = array_combine($placeholders, $getters);
-        
-        $sql = "INSERT INTO $table (".implode(', ', $filtredFillable).") VALUES (".implode(', ', $placeholders).")";
+    
+        $sql = "INSERT INTO $table (" . implode(', ', $filtredFillable) . ") VALUES (" . implode(', ', array_keys($params)) . ")";
     
         return Database::execute($sql, $params);
     }
     
-
     public function update()
     {
-
-    }
+        $id = $this->id();
+        $table = $this->getTable();
+        $fillable = $this->getFillable();
+    
+        $filtredFillable = array_filter($fillable, fn($coluna) => $coluna !== 'id');
+    
+        $columns = [];
+        $params = [];
+        foreach ($filtredFillable as $field) {
+            $columns[] = "$field = :$field";
+            if (is_object($this->$field())) {
+                $params[":$field"] = $this->$field()->id();
+            } else {
+                $params[":$field"] = $this->$field();
+            }
+        }
+    
+        $params[':id'] = $id;
+    
+        $sql = "UPDATE $table SET " . implode(', ', $columns) . " WHERE id = :id";
+    
+        return Database::execute($sql, $params);
+    }    
 
     public function delete()
     {
+        $id = $this->id();
+        $table = $this->getTable();
 
+        $sql = "DELETE FROM $table WHERE id = :id";
+
+        $params = [
+            ':id' => $id
+        ];
+
+        return Database::execute($sql, $params);
     }
 
     public static function all()
@@ -136,11 +161,6 @@ abstract class Model {
         return $collection;
     }
 
-    public static function makeAttributes($key, $value, $fillable)
-    {
-        
-    }
-
     public static function where()
     {
         
@@ -162,5 +182,14 @@ abstract class Model {
         $register = self::makeClassList($command, $fillable, $class);
 
         return $register[0];
+    }
+
+    public function fill($attributes)
+    {
+        $class = static::getClass();
+
+        $instance = new $class(...array_values($attributes));
+
+        return $instance;
     }
 }

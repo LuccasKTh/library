@@ -18,9 +18,11 @@
                         <p class="text-lg"><span class="font-bold">Preço: </span>R$:book{price}</p>
                     </div>
                 </div>
-                <div>
-                    <button class="btn btn-outline btn-warning">Editar</button>
-                    <button class="btn btn-outline btn-error">Excluir</button>
+                <div class="flex gap-2">
+                    <a href="/book/:book{id}/edit" class="btn btn-outline btn-warning">Editar</a>
+                    <form action="/book/:book{id}/destroy" method="POST">
+                        <button class="btn btn-outline btn-error">Excluir</button>
+                    </form>
                 </div>
                 <div class="place-self-end">
                     <div class="flex gap-3 items-center">

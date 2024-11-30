@@ -3,11 +3,9 @@
 require 'vendor/autoload.php';
 require_once "./autoload.php";
 
-$route = Route::getUri();
-$method = Route::getMethod();
-$request = $_GET ? $_GET : $_POST;
-
 $route = Route::makeCleanUri();
+$method = Route::getMethod();
+$request = Route::getRequest();
 
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
@@ -40,7 +38,21 @@ switch (true) {
 
     case preg_match('/^customer\/(\d+)$/', $route, $matches):
         $id = $matches[1];
-        Route::resource(CustomerController::class, 'show');
+        Route::resource(CustomerController::class, 'show', $id);
+        break;
+
+    case preg_match('/^customer\/(\d+)\/edit$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(CustomerController::class,'edit', $id);
+        break;
+
+    case ($route === 'customer/update' && $method === 'POST'):
+        Route::resource(CustomerController::class,'update', $request);
+        break;
+
+    case preg_match('/^customer\/(\d+)\/destroy$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(CustomerController::class,'destroy', $id);
         break;
 
     case ($route === 'author' && $method === 'GET'):
@@ -57,7 +69,21 @@ switch (true) {
 
     case preg_match('/^author\/(\d+)$/', $route, $matches):
         $id = $matches[1];
-        Route::resource(AuthorController::class, 'show');
+        Route::resource(AuthorController::class, 'show', $id);
+        break;
+
+    case preg_match('/^author\/(\d+)\/edit$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(AuthorController::class,'edit', $id);
+        break;
+
+    case ($route === 'author/update' && $method === 'POST'):
+        Route::resource(AuthorController::class,'update', $request);
+        break;
+
+    case preg_match('/^author\/(\d+)\/destroy$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(AuthorController::class,'destroy', $id);
         break;
 
     case ($route === 'category' && $method === 'GET'):
@@ -75,6 +101,20 @@ switch (true) {
     case preg_match('/^category\/(\d+)$/', $route, $matches):
         $id = $matches[1];
         Route::resource(CategoryController::class, 'show', $id);
+        break;
+
+    case preg_match('/^category\/(\d+)\/edit$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(CategoryController::class,'edit', $id);
+        break;
+
+    case ($route === 'category/update' && $method === 'POST'):
+        Route::resource(CategoryController::class,'update', $request);
+        break;
+
+    case preg_match('/^category\/(\d+)\/destroy$/', $route, $matches):
+        $id = $matches[1];
+        Route::resource(CategoryController::class,'destroy', $id);
         break;
 
     case ($route === 'book' && $method === 'GET'):

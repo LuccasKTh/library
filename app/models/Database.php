@@ -56,7 +56,7 @@ class Database
             $command->execute();
             return $command;
         } catch (PDOException $e) {
-            throw new Exception("Execute command error in database. ({$e->getMessage()}. - {$command->errorInfo()[2]})");
+            throw $e;
         }
     }
 

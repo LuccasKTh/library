@@ -25,14 +25,17 @@
                     </form>
                 </div>
                 <div class="place-self-end">
-                    <div class="flex gap-3 items-center">
-                        <div class="join">
-                            <button class="btn btn-sm join-item w-8">-</button>
-                            <span class="flex items-center justify-center w-8">1</span>
-                            <button class="btn btn-sm join-item w-8">+</button>
+                    <form action="" method="post">
+                        <div class="flex gap-3 items-center">
+                            <div x-data="{ count: 1 }" class="join">
+                                <button type="button" x-on:click="count > 1 ? count-- : count" class="btn btn-sm join-item w-8">-</button>
+                                <input type="hidden" name="book_count" x-model="count">
+                                <span x-text="count" class="flex items-center justify-center w-8"></span>
+                                <button type="button" x-on:click="count++" class="btn btn-sm join-item w-8">+</button>
+                            </div>
+                            <button class="btn btn-success">Carrinho</button>
                         </div>
-                        <button class="btn btn-success">Comprar</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
